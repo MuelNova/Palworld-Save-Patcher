@@ -182,12 +182,12 @@ def _decompress(data: bytes, type_: SaveType = SaveType.SINGLE) -> bytes:
         if len(raw_data) != uncompressed_length:
             raise ValueError
     elif type_ == SaveType.DOUBLE:
-        if len(data[12:]) != compressed_length:
-            raise ValueError
         fd = zlib.decompress(data[12:])
-        if len(fd) != uncompressed_length:
+        if len(fd) != compressed_length:
             raise ValueError
         raw_data = zlib.decompress(fd)
+        if len(raw_data) != uncompressed_length:
+            raise ValueError
     return raw_data
         
 
